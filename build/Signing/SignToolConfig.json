@@ -1,12 +1,11 @@
 {
-  "sign": [
-    {
-      "certificate": "Microsoft400",
-      "strongName": null,
-      "values": [
-        "netfx_NETCoreUWP.msi"
-      ]
-    }
-  ]
+    sign: [
+        {
+            "certificate": "Microsoft402",
+            "strongName": "MsSharedLib72",
+          "values": [
+            "netfx_NETCoreUWP.msi"
+          ]
+        }
+    ]
 }
-
