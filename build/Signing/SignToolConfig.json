@@ -1,8 +1,8 @@
 {
     sign: [
         {
-            "certificate": "Microsoft402",
-            "strongName": "MsSharedLib72",
+            "certificate": "Microsoft400",
+            "strongName": null,
           "values": [
             "netfx_NETCoreUWP.msi"
           ]
