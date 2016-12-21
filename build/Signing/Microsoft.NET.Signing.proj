@@ -3,7 +3,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'Common.props'))\Common.props" />
 
   <PropertyGroup>
-    <SignTool>$(NuGet_Packages)\roslyntools.microsoft.signtool\0.2.0-beta\tools\SignTool.exe</SignTool>
+    <SignTool>$(NuGet_Packages)\roslyntools.microsoft.signtool\0.3.0-beta\tools\SignTool.exe</SignTool>
     <SignToolTest Condition="'$(SignType)'!='real'"> -test</SignToolTest>
     <SigningConfig Condition="'$(BuildTemplates)' != 'true'">$(MSBuildThisFileDirectory)SignToolConfig.json</SigningConfig>
     <SigningConfig Condition="'$(BuildTemplates)' == 'true'">$(MSBuildThisFileDirectory)SignToolTemplateConfig.json</SigningConfig>

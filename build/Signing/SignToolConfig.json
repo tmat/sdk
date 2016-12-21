@@ -1,11 +1,11 @@
 {
     sign: [
-        {
-            "certificate": "Microsoft400",
-            "strongName": null,
-          "values": [
-            "netfx_NETCoreUWP.msi"
-          ]
-        }
+      {
+        "certificate": "Microsoft400",
+        "strongName": null,
+        "values": [
+          "netfx_NETCoreUWP.msi"
+        ]
+      }
     ]
 }
