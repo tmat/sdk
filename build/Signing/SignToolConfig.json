@@ -4,7 +4,7 @@
         "certificate": "Microsoft400",
         "strongName": null,
         "values": [
-          "netfx_NETCoreUWP.msi"
+          "netfx_NETCoreSDK.msi"
         ]
       }
     ]
