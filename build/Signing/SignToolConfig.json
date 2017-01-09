@@ -4,7 +4,7 @@
         "certificate": "Microsoft400",
         "strongName": null,
         "values": [
-          "netfx_NETCoreSDK.msi",
+          "netfx_NETCoreUWP.msi",
           "cab1.cab",
           "cab2.cab",
           "cab3.cab",
