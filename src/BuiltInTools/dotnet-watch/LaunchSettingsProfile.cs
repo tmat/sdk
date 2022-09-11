@@ -12,7 +12,7 @@ using Microsoft.Extensions.Tools.Internal;
 
 namespace Microsoft.DotNet.Watcher.Tools
 {
-    public class LaunchSettingsProfile
+    internal class LaunchSettingsProfile
     {
         public string? ApplicationUrl { get; set; }
 

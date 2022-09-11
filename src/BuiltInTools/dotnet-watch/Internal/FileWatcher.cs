@@ -9,7 +9,7 @@ using Microsoft.Extensions.Tools.Internal;
 
 namespace Microsoft.DotNet.Watcher.Internal
 {
-    public class FileWatcher
+    internal class FileWatcher
     {
         private bool _disposed;
 

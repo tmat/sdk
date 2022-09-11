@@ -5,7 +5,7 @@ using System;
 
 namespace Microsoft.DotNet.Watcher
 {
-    public record DotNetWatchOptions(
+    internal record DotNetWatchOptions(
         bool SuppressHandlingStaticContentFiles,
         bool SuppressMSBuildIncrementalism,
         bool SuppressLaunchBrowser,

@@ -18,7 +18,7 @@ using IReporter = Microsoft.Extensions.Tools.Internal.IReporter;
 
 namespace Microsoft.DotNet.Watcher
 {
-    public class HotReloadDotNetWatcher : IAsyncDisposable
+    internal class HotReloadDotNetWatcher : IAsyncDisposable
     {
         private readonly IReporter _reporter;
         private readonly IConsole _console;

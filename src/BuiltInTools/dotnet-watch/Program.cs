@@ -23,7 +23,7 @@ using System.Diagnostics;
 
 namespace Microsoft.DotNet.Watcher
 {
-    public class Program : IDisposable
+    internal class Program : IDisposable
     {
         private const string Description = @"
 Environment variables:

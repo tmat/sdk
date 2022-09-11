@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.Tools.Internal
     /// This API supports infrastructure and is not intended to be used
     /// directly from your code. This API may change or be removed in future releases.
     /// </summary>
-    public class ConsoleReporter : IReporter
+    internal class ConsoleReporter : IReporter
     {
         private readonly object _writeLock = new object();
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.DotNet.Watcher.Tools
 {
-    interface IDeltaApplier : IDisposable
+    internal interface IDeltaApplier : IDisposable
     {
         ValueTask InitializeAsync(DotNetWatchContext context, CancellationToken cancellationToken);
 

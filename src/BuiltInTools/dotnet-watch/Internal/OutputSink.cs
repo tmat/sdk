@@ -3,7 +3,7 @@
 
 namespace Microsoft.DotNet.Watcher.Internal
 {
-    public class OutputSink
+    internal class OutputSink
     {
         public OutputCapture Current { get; private set; }
         public OutputCapture StartCapture()

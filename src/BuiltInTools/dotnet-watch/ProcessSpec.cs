@@ -9,7 +9,7 @@ using Microsoft.DotNet.Watcher.Internal;
 
 namespace Microsoft.DotNet.Watcher
 {
-    public class ProcessSpec
+    internal class ProcessSpec
     {
         public string Executable { get; set; }
         public string WorkingDirectory { get; set; }
