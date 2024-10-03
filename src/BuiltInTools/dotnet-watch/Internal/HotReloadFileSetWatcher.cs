@@ -98,6 +98,13 @@ namespace Microsoft.DotNet.Watcher.Internal
                     return;
                 }
 
+                // ignore changes in .git metadata
+                if (IsGitMetadataFile(path))
+                {
+                    reporter.Verbose($"Ignoring git metadata file change: '{path}'.");
+                    return;
+                }
+
                 if (kind != ChangeKind.Delete)
                 {
                     try
@@ -154,6 +161,28 @@ namespace Microsoft.DotNet.Watcher.Internal
                         _changedFiles.TryAdd(path, new ChangedFile(fileItem, kind));
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// True if the file is under ".git" directory.
+        /// </summary>
+        internal static bool IsGitMetadataFile(string filePath)
+        {
+            while (true)
+            {
+                var containingDir = Path.GetDirectoryName(filePath);
+                if (containingDir == null)
+                {
+                    return false;
+                }
+
+                if (Path.GetFileName(containingDir) == ".git")
+                {
+                    return true;
+                }
+
+                filePath = containingDir;
             }
         }
 

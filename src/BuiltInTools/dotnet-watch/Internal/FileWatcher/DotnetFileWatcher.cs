@@ -2,48 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.ComponentModel;
-using Microsoft.Extensions.Tools.Internal;
 
 namespace Microsoft.DotNet.Watcher.Internal
 {
-    internal class DotnetFileWatcher : IFileSystemWatcher
+    internal sealed class DotnetFileWatcher : IFileSystemWatcher
     {
-        internal Action<string>? Logger { get; set;  }
-
-        private volatile bool _disposed;
-
-        private readonly Func<string, FileSystemWatcher> _watcherFactory;
-
-        private FileSystemWatcher? _fileSystemWatcher;
-
-        private readonly object _createLock = new();
-
-        public DotnetFileWatcher(string watchedDirectory)
-            : this(watchedDirectory, DefaultWatcherFactory)
-        {
-        }
-
-        internal DotnetFileWatcher(string watchedDirectory, Func<string, FileSystemWatcher> fileSystemWatcherFactory)
-        {
-            Ensure.NotNull(fileSystemWatcherFactory, nameof(fileSystemWatcherFactory));
-            Ensure.NotNullOrEmpty(watchedDirectory, nameof(watchedDirectory));
-
-            BasePath = watchedDirectory;
-            _watcherFactory = fileSystemWatcherFactory;
-            CreateFileSystemWatcher();
-        }
+        internal Action<string>? Logger { get; set; }
 
         public event EventHandler<(string filePath, ChangeKind kind)>? OnFileChange;
-
         public event EventHandler<Exception>? OnError;
-
         public string BasePath { get; }
 
-        private static FileSystemWatcher DefaultWatcherFactory(string watchedDirectory)
-        {
-            Ensure.NotNullOrEmpty(watchedDirectory, nameof(watchedDirectory));
+        private volatile bool _disposed;
+        private FileSystemWatcher? _fileSystemWatcher;
+        private readonly object _createLock = new();
 
-            return new FileSystemWatcher(watchedDirectory);
+        internal DotnetFileWatcher(string watchedDirectory)
+        {
+            BasePath = watchedDirectory;
+            CreateFileSystemWatcher();
         }
 
         private void WatcherErrorHandler(object sender, ErrorEventArgs e)
@@ -62,7 +39,7 @@ namespace Microsoft.DotNet.Watcher.Internal
             // Win32Exception may be triggered when setting EnableRaisingEvents on a file system type
             // that is not supported, such as a network share. Don't attempt to recreate the watcher
             // in this case as it will cause a StackOverflowException
-            if (!(exception is Win32Exception))
+            if (exception is not Win32Exception)
             {
                 // Recreate the watcher if it is a recoverable error.
                 CreateFileSystemWatcher();
@@ -147,8 +124,10 @@ namespace Microsoft.DotNet.Watcher.Internal
                     DisposeInnerWatcher();
                 }
 
-                _fileSystemWatcher = _watcherFactory(BasePath);
-                _fileSystemWatcher.IncludeSubdirectories = true;
+                _fileSystemWatcher = new FileSystemWatcher(BasePath)
+                {
+                    IncludeSubdirectories = true
+                };
 
                 _fileSystemWatcher.Created += WatcherAddedHandler;
                 _fileSystemWatcher.Deleted += WatcherDeletedHandler;

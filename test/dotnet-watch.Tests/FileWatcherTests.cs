@@ -65,8 +65,7 @@ namespace Microsoft.DotNet.Watcher.Tools
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
+        [CombinatorialData]
         public async Task NewFile(bool usePolling)
         {
             var dir = _testAssetManager.CreateTestDirectory(identifier: usePolling.ToString()).Path;
@@ -90,8 +89,7 @@ namespace Microsoft.DotNet.Watcher.Tools
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
+        [CombinatorialData]
         public async Task NewFileInNewDirectory(bool usePolling)
         {
             var dir = _testAssetManager.CreateTestDirectory(identifier: usePolling.ToString()).Path;
@@ -121,8 +119,7 @@ namespace Microsoft.DotNet.Watcher.Tools
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
+        [CombinatorialData]
         public async Task ChangeFile(bool usePolling)
         {
             var dir = _testAssetManager.CreateTestDirectory(identifier: usePolling.ToString()).Path;
@@ -189,8 +186,7 @@ namespace Microsoft.DotNet.Watcher.Tools
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
+        [CombinatorialData]
         public async Task NoNotificationIfDisabled(bool usePolling)
         {
             var dir = _testAssetManager.CreateTestDirectory(identifier: usePolling.ToString()).Path;
@@ -218,8 +214,7 @@ namespace Microsoft.DotNet.Watcher.Tools
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
+        [CombinatorialData]
         public async Task DisposedNoEvents(bool usePolling)
         {
             var dir = _testAssetManager.CreateTestDirectory(identifier: usePolling.ToString()).Path;
@@ -245,8 +240,7 @@ namespace Microsoft.DotNet.Watcher.Tools
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
+        [CombinatorialData]
         public async Task MultipleFiles(bool usePolling)
         {
             var dir = _testAssetManager.CreateTestDirectory(identifier: usePolling.ToString()).Path;
@@ -273,8 +267,7 @@ namespace Microsoft.DotNet.Watcher.Tools
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
+        [CombinatorialData]
         public async Task MultipleTriggers(bool usePolling)
         {
             var dir = _testAssetManager.CreateTestDirectory(identifier: usePolling.ToString()).Path;
@@ -333,8 +326,7 @@ namespace Microsoft.DotNet.Watcher.Tools
         }
 
         [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
+        [CombinatorialData]
         public async Task DeleteSubfolder(bool usePolling)
         {
             var dir = _testAssetManager.CreateTestDirectory(usePolling.ToString()).Path;

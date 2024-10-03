@@ -17,10 +17,15 @@ namespace Microsoft.DotNet.Watcher.Tests
                 .WithSource();
 
             var dependencyDir = Path.Combine(testAsset.Path, "Dependency");
+            var gitDir = Path.Combine(testAsset.Path, ".git");
+            Directory.CreateDirectory(gitDir);
 
             App.Start(testAsset, [], "AppWithDeps");
 
             await App.AssertWaitingForChanges();
+
+            // write .git metadata file:
+            UpdateSourceFile(Path.Combine(gitDir, "GitDataFile"), "abc");
 
             // add a new file:
             UpdateSourceFile(Path.Combine(dependencyDir, "AnotherLib.cs"), """
@@ -41,6 +46,9 @@ namespace Microsoft.DotNet.Watcher.Tests
                 """);
 
             await App.AssertOutputLineStartsWith("Changed!");
+
+            // TODO: use new API
+            App.Process.Output.Contains("");
         }
 
         [Fact]
