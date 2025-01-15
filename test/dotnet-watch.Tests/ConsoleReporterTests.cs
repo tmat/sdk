@@ -31,7 +31,7 @@ namespace Microsoft.DotNet.Watch.UnitTests
 
             // stderr
             reporter.Error("error");
-            Assert.Equal($"dotnet watch {(suppressEmojis ? ":" : "❌")} error" + EOL, testConsole.GetError());
+            Assert.Equal($"dotnet watch {(suppressEmojis ? ":" : "❌")} error" + EOL, testConsole.GetOutput());
             testConsole.Clear();
         }
 
