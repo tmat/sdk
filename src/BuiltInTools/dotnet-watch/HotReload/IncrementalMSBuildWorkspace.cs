@@ -50,7 +50,7 @@ internal class IncrementalMSBuildWorkspace : Workspace
 
         var oldProjectIdsByPath = oldSolution.Projects.ToDictionary(keySelector: static p => (p.FilePath!, p.Name), elementSelector: static p => p.Id);
 
-        // Map new project id to the corresponding old one based on file path and project name (includes TFM), if it exists, and null for added projects.
+        // Maps new project id to the corresponding old one based on file path and project name (includes TFM), if it exists, and null for added projects.
         // Deleted projects won't be included in this map.
         var projectIdMap = projectInfos.ToDictionary(
             keySelector: static info => info.Id,
@@ -69,26 +69,12 @@ internal class IncrementalMSBuildWorkspace : Workspace
                 continue;
             }
 
-            newSolution = WatchHotReloadService.WithProjectInfo(newSolution, ProjectInfo.Create(
-                oldProjectId,
-                newProjectInfo.Version,
-                newProjectInfo.Name,
-                newProjectInfo.AssemblyName,
-                newProjectInfo.Language,
-                newProjectInfo.FilePath,
-                newProjectInfo.OutputFilePath,
-                newProjectInfo.CompilationOptions,
-                newProjectInfo.ParseOptions,
-                MapDocuments(oldProjectId, newProjectInfo.Documents),
-                newProjectInfo.ProjectReferences.Select(MapProjectReference),
-                newProjectInfo.MetadataReferences,
-                newProjectInfo.AnalyzerReferences,
-                MapDocuments(oldProjectId, newProjectInfo.AdditionalDocuments),
-                isSubmission: false,
-                hostObjectType: null,
-                outputRefFilePath: newProjectInfo.OutputRefFilePath)
-                .WithAnalyzerConfigDocuments(MapDocuments(oldProjectId, newProjectInfo.AnalyzerConfigDocuments))
-                .WithCompilationOutputInfo(newProjectInfo.CompilationOutputInfo));
+            newSolution = WatchHotReloadService.WithProjectInfo(newSolution,
+                newProjectInfo
+                    .WithProjectReferences(newProjectInfo.ProjectReferences.Select(MapProjectReference))
+                    .WithDocuments(MapDocuments(oldProjectId, newProjectInfo.Documents))
+                    .WithAdditionalDocuments(MapDocuments(oldProjectId, newProjectInfo.AdditionalDocuments))
+                    .WithAnalyzerConfigDocuments(MapDocuments(oldProjectId, newProjectInfo.AnalyzerConfigDocuments)));
         }
 
         await ReportSolutionFilesAsync(SetCurrentSolution(newSolution), cancellationToken);
@@ -124,6 +110,12 @@ internal class IncrementalMSBuildWorkspace : Workspace
             Debug.Assert(change != ChangeKind.Add);
 
             var documentIds = updatedSolution.GetDocumentIdsWithFilePath(changedFile.FilePath);
+            if (documentIds.IsEmpty)
+            {
+                // TODO: updatedSolution = WatchHotReloadService.WithManifestResourceChanged(updatedSolution, changedFile.FilePath, isDelete: change == ChangeKind.Delete);
+                continue;
+            }
+
             if (change == ChangeKind.Delete)
             {
                 documentsToRemove.AddRange(documentIds);
