@@ -91,7 +91,7 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             yield return (context) =>
             {
                 InstantiateCommandArgs instantiateCommandArgs = new(this, context.ParseResult);
-                using IEngineEnvironmentSettings environmentSettings = CreateEnvironmentSettings(instantiateCommandArgs, context.ParseResult);
+                using IEngineEnvironmentSettings environmentSettings = CreateEnvironmentSettings(instantiateCommandArgs, GetHost(context.ParseResult));
                 WriteHelp(context, instantiateCommandArgs, environmentSettings);
             };
         }

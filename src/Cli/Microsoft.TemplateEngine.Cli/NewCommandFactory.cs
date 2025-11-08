@@ -10,14 +10,20 @@ namespace Microsoft.TemplateEngine.Cli
     {
         public static Command Create(string commandName, Func<ParseResult, ICliTemplateEngineHost> hostBuilder)
         {
-            if (string.IsNullOrWhiteSpace(commandName))
-            {
-                throw new ArgumentException($"'{nameof(commandName)}' cannot be null or whitespace.", nameof(commandName));
-            }
+            ArgumentNullException.ThrowIfNull(hostBuilder);
 
-            _ = hostBuilder ?? throw new ArgumentNullException(nameof(hostBuilder));
+            var command = CreateDefinitionImpl(commandName);
+            command.SetAction(hostBuilder);
+            return command;
+        }
 
-            return new NewCommand(commandName, hostBuilder);
+        public static Command CreateDefinition(string commandName)
+            => CreateDefinitionImpl(commandName);
+
+        internal static NewCommand CreateDefinitionImpl(string commandName)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(commandName, nameof(commandName));
+            return new NewCommand(commandName);
         }
     }
 }

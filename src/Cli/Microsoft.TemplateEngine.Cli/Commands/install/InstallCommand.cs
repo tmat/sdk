@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class InstallCommand : BaseInstallCommand
     {
-        public InstallCommand(
-                NewCommand parentCommand,
-                Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(parentCommand, hostBuilder, "install")
+        public InstallCommand(NewCommand parentCommand)
+            : base(parentCommand, "install")
         {
             parentCommand.AddNoLegacyUsageValidators(this);
         }

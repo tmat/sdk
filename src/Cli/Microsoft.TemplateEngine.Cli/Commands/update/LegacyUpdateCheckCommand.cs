@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class LegacyUpdateCheckCommand : BaseUpdateCommand
     {
-        public LegacyUpdateCheckCommand(
-            NewCommand parentCommand,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(parentCommand, hostBuilder, "--update-check", SymbolStrings.Command_Update_Description)
+        public LegacyUpdateCheckCommand(NewCommand parentCommand)
+            : base(parentCommand, "--update-check", SymbolStrings.Command_Update_Description)
         {
             Hidden = true;
             parentCommand.AddNoLegacyUsageValidators(this, except: new Option[] { InteractiveOption, AddSourceOption });

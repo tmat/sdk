@@ -9,11 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal abstract class BaseInstallCommand : BaseCommand<InstallCommandArgs>
     {
-        internal BaseInstallCommand(
-            NewCommand parentCommand,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder,
-            string commandName)
-            : base(hostBuilder, commandName, SymbolStrings.Command_Install_Description)
+        internal BaseInstallCommand(NewCommand parentCommand, string commandName)
+            : base(commandName, SymbolStrings.Command_Install_Description)
         {
             ParentCommand = parentCommand;
             Arguments.Add(NameArgument);

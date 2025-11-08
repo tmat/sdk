@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class ListCommand : BaseListCommand
     {
-        public ListCommand(
-                NewCommand parentCommand,
-                Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(parentCommand, hostBuilder, "list")
+        public ListCommand(NewCommand parentCommand)
+            : base(parentCommand, "list")
         {
             parentCommand.AddNoLegacyUsageValidators(this);
         }

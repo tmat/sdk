@@ -18,11 +18,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             FilterOptionDefinition.TagFilter
         };
 
-        internal BaseListCommand(
-            NewCommand parentCommand,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder,
-            string commandName)
-            : base(hostBuilder, commandName, SymbolStrings.Command_List_Description)
+        internal BaseListCommand(NewCommand parentCommand, string commandName)
+            : base(commandName, SymbolStrings.Command_List_Description)
         {
             ParentCommand = parentCommand;
             Filters = SetupFilterOptions(SupportedFilters);

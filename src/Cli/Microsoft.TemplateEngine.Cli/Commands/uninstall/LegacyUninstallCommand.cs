@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class LegacyUninstallCommand : BaseUninstallCommand
     {
-        public LegacyUninstallCommand(
-            NewCommand parentCommand,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(hostBuilder, "--uninstall")
+        public LegacyUninstallCommand(NewCommand parentCommand)
+            : base("--uninstall")
         {
             Hidden = true;
             Aliases.Add("-u");

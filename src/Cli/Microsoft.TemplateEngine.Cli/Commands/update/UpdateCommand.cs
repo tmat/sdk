@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class UpdateCommand : BaseUpdateCommand
     {
-        public UpdateCommand(
-                NewCommand parentCommand,
-                Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(parentCommand, hostBuilder, "update", SymbolStrings.Command_Update_Description)
+        public UpdateCommand(NewCommand parentCommand)
+            : base(parentCommand, "update", SymbolStrings.Command_Update_Description)
         {
             parentCommand.AddNoLegacyUsageValidators(this);
             Options.Add(CheckOnlyOption);

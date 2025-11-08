@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class BaseUninstallCommand : BaseCommand<UninstallCommandArgs>
     {
-        internal BaseUninstallCommand(
-            Func<ParseResult, ITemplateEngineHost> hostBuilder,
-            string commandName)
-            : base(hostBuilder, commandName, SymbolStrings.Command_Uninstall_Description)
+        internal BaseUninstallCommand(string commandName)
+            : base(commandName, SymbolStrings.Command_Uninstall_Description)
         {
             Arguments.Add(NameArgument);
         }

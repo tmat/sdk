@@ -11,10 +11,9 @@ namespace Microsoft.TemplateEngine.Cli.Commands
     {
         internal BaseUpdateCommand(
             NewCommand parentCommand,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder,
             string commandName,
             string description)
-            : base(hostBuilder, commandName, description)
+            : base(commandName, description)
         {
             ParentCommand = parentCommand;
             Options.Add(InteractiveOption);

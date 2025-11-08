@@ -11,25 +11,23 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal partial class NewCommand : BaseCommand<NewCommandArgs>, ICustomHelp
     {
-        internal NewCommand(
-            string commandName,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(hostBuilder, commandName, SymbolStrings.Command_New_Description)
+        internal NewCommand(string commandName)
+            : base(commandName, SymbolStrings.Command_New_Description)
         {
             this.DocsLink = "https://aka.ms/dotnet-new";
             TreatUnmatchedTokensAsErrors = true;
 
             //it is important that legacy commands are built before non-legacy, as non legacy commands are building validators that rely on legacy stuff
-            BuildLegacySymbols(hostBuilder);
+            BuildLegacySymbols();
 
-            Add(new InstantiateCommand(this, hostBuilder));
-            Add(new InstallCommand(this, hostBuilder));
-            Add(new UninstallCommand(this, hostBuilder));
-            Add(new UpdateCommand(this, hostBuilder));
-            Add(new SearchCommand(this, hostBuilder));
-            Add(new ListCommand(this, hostBuilder));
-            Add(new AliasCommand(hostBuilder));
-            Add(new DetailsCommand(hostBuilder));
+            Add(new InstantiateCommand(this));
+            Add(new InstallCommand(this));
+            Add(new UninstallCommand(this));
+            Add(new UpdateCommand(this));
+            Add(new SearchCommand(this));
+            Add(new ListCommand(this));
+            Add(new AliasCommand());
+            Add(new DetailsCommand());
 
             Options.Add(DebugCustomSettingsLocationOption);
             Options.Add(DebugVirtualizeSettingsOption);
@@ -109,6 +107,16 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             SharedOptions.DryRunOption,
             SharedOptions.NoUpdateCheckOption
         };
+
+        public override void SetAction(Func<ParseResult, ITemplateEngineHost> hostBuilder)
+        {
+            base.SetAction(hostBuilder);
+
+            foreach (BaseCommand command in Subcommands)
+            {
+                command.SetAction(hostBuilder);
+            }
+        }
 
         protected internal override IEnumerable<CompletionItem> GetCompletions(CompletionContext context, IEngineEnvironmentSettings environmentSettings, TemplatePackageManager templatePackageManager)
         {

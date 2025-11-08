@@ -10,9 +10,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class DetailsCommand : BaseCommand<DetailsCommandArgs>
     {
-        internal DetailsCommand(
-            Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(hostBuilder, "details", SymbolStrings.Command_Details_Description)
+        internal DetailsCommand()
+            : base("details", SymbolStrings.Command_Details_Description)
         {
             Arguments.Add(NameArgument);
             Options.Add(InteractiveOption);

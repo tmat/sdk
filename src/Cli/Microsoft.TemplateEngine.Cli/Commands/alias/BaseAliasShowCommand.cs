@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class BaseAliasShowCommand : BaseCommand<AliasShowCommandArgs>
     {
-        internal BaseAliasShowCommand(
-            Func<ParseResult, ITemplateEngineHost> hostBuilder,
-            string commandName)
-            : base(hostBuilder, commandName, SymbolStrings.Command_AliasShow_Description) { }
+        internal BaseAliasShowCommand(string commandName)
+            : base(commandName, SymbolStrings.Command_AliasShow_Description) { }
 
         protected override Task<NewCommandStatus> ExecuteAsync(
             AliasShowCommandArgs args,

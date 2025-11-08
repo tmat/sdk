@@ -10,10 +10,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class LegacyListCommand : BaseListCommand
     {
-        public LegacyListCommand(
-            NewCommand parentCommand,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(parentCommand, hostBuilder, "--list")
+        public LegacyListCommand(NewCommand parentCommand)
+            : base(parentCommand, "--list")
         {
             Hidden = true;
             Aliases.Add("-l");

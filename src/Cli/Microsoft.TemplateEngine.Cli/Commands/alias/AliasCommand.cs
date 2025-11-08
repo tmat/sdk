@@ -9,13 +9,12 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class AliasCommand : BaseCommand<AliasCommandArgs>
     {
-        internal AliasCommand(
-            Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(hostBuilder, "alias", SymbolStrings.Command_Alias_Description)
+        internal AliasCommand()
+            : base("alias", SymbolStrings.Command_Alias_Description)
         {
             Hidden = true;
-            Add(new AliasAddCommand(hostBuilder));
-            Add(new AliasShowCommand(hostBuilder));
+            Add(new AliasAddCommand());
+            Add(new AliasShowCommand());
         }
 
         protected override Task<NewCommandStatus> ExecuteAsync(

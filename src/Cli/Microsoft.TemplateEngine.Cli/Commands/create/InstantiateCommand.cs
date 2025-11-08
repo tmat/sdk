@@ -15,10 +15,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal partial class InstantiateCommand : BaseCommand<InstantiateCommandArgs>, ICustomHelp
     {
-        internal InstantiateCommand(
-            NewCommand parentCommand,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(hostBuilder, "create", SymbolStrings.Command_Instantiate_Description)
+        internal InstantiateCommand(NewCommand parentCommand)
+            : base("create", SymbolStrings.Command_Instantiate_Description)
         {
             Arguments.Add(ShortNameArgument);
             Arguments.Add(RemainingArguments);

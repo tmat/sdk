@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class LegacyUpdateApplyCommand : BaseUpdateCommand
     {
-        public LegacyUpdateApplyCommand(
-            NewCommand parentCommand,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(parentCommand, hostBuilder, "--update-apply", SymbolStrings.Command_Legacy_Update_Check_Description)
+        public LegacyUpdateApplyCommand(NewCommand parentCommand)
+            : base(parentCommand, "--update-apply", SymbolStrings.Command_Legacy_Update_Check_Description)
         {
             Hidden = true;
             parentCommand.AddNoLegacyUsageValidators(this, except: new Option[] { InteractiveOption, AddSourceOption });

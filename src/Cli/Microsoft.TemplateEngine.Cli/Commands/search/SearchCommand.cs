@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class SearchCommand : BaseSearchCommand
     {
-        public SearchCommand(
-                NewCommand parentCommand,
-                Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(parentCommand, hostBuilder, "search")
+        public SearchCommand(NewCommand parentCommand)
+            : base(parentCommand, "search")
         {
             parentCommand.AddNoLegacyUsageValidators(this);
         }

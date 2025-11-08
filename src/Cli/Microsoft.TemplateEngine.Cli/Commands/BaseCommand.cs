@@ -4,6 +4,7 @@
 using System.CommandLine;
 using System.CommandLine.Completions;
 using System.CommandLine.Invocation;
+using System.Diagnostics;
 using System.Reflection;
 using Microsoft.DotNet.Cli.Utils;
 using Microsoft.DotNet.Cli.Utils.Extensions;
@@ -17,18 +18,9 @@ using Command = System.CommandLine.Command;
 
 namespace Microsoft.TemplateEngine.Cli.Commands
 {
-    internal abstract class BaseCommand : Command
+    internal abstract class BaseCommand(string name, string description) : Command(name, description)
     {
-        private readonly Func<ParseResult, ITemplateEngineHost> _hostBuilder;
-
-        protected BaseCommand(
-            Func<ParseResult, ITemplateEngineHost> hostBuilder,
-            string name,
-            string description)
-            : base(name, description)
-        {
-            _hostBuilder = hostBuilder;
-        }
+        public abstract void SetAction(Func<ParseResult, ITemplateEngineHost> hostBuilder);
 
         protected internal virtual IEnumerable<CompletionItem> GetCompletions(CompletionContext context, IEngineEnvironmentSettings environmentSettings, TemplatePackageManager templatePackageManager)
         {
@@ -37,9 +29,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 #pragma warning restore SA1100 // Do not prefix calls with base unless local implementation exists
         }
 
-        protected IEngineEnvironmentSettings CreateEnvironmentSettings(GlobalArgs args, ParseResult parseResult)
+        protected static IEngineEnvironmentSettings CreateEnvironmentSettings(GlobalArgs args, ITemplateEngineHost host)
         {
-            ITemplateEngineHost host = _hostBuilder(parseResult);
             IEnvironment environment = new CliEnvironment();
 
             return new EngineEnvironmentSettings(
@@ -50,15 +41,12 @@ namespace Microsoft.TemplateEngine.Cli.Commands
         }
     }
 
-    internal abstract class BaseCommand<TArgs> : BaseCommand where TArgs : GlobalArgs
+    internal abstract class BaseCommand<TArgs>(string name, string description) : BaseCommand(name, description) where TArgs : GlobalArgs
     {
-        internal BaseCommand(
-            Func<ParseResult, ITemplateEngineHost> hostBuilder,
-            string name,
-            string description)
-            : base(hostBuilder, name, description)
+        public override void SetAction(Func<ParseResult, ITemplateEngineHost> hostBuilder)
         {
-            Action = new CommandAction(this);
+            Debug.Assert(Action == null);
+            Action = new CommandAction(this, hostBuilder);
         }
 
         public override IEnumerable<CompletionItem> GetCompletions(CompletionContext context)
@@ -67,8 +55,9 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             {
                 return base.GetCompletions(context);
             }
+
             GlobalArgs args = new(this, context.ParseResult);
-            using IEngineEnvironmentSettings environmentSettings = CreateEnvironmentSettings(args, context.ParseResult);
+            using IEngineEnvironmentSettings environmentSettings = CreateEnvironmentSettings(args, GetHost(context.ParseResult));
             using TemplatePackageManager templatePackageManager = new(environmentSettings);
             return GetCompletions(context, environmentSettings, templatePackageManager).ToList();
         }
@@ -116,6 +105,12 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             Reporter.Output.WriteLine(LocalizableStrings.Commands_Warning_DeprecatedCommand_Info.Yellow());
             Reporter.Output.WriteCommand(Example.For<TNew>(parseResult).WithHelpOption().ToString().Yellow());
             Reporter.Output.WriteLine();
+        }
+
+        protected ITemplateEngineHost GetHost(ParseResult parseResult)
+        {
+            var action = (CommandAction)(Action ?? throw new InvalidOperationException("Command action not set"));
+            return action.HostBuilder(parseResult);
         }
 
         protected abstract Task<NewCommandStatus> ExecuteAsync(TArgs args, IEngineEnvironmentSettings environmentSettings, TemplatePackageManager templatePackageManager, ParseResult parseResult, CancellationToken cancellationToken);
@@ -222,16 +217,15 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             Reporter.Output.WriteLine();
         }
 
-        private sealed class CommandAction : AsynchronousCommandLineAction
+        private sealed class CommandAction(BaseCommand<TArgs> command, Func<ParseResult, ITemplateEngineHost> hostBuilder) : AsynchronousCommandLineAction
         {
-            private readonly BaseCommand<TArgs> _command;
-
-            public CommandAction(BaseCommand<TArgs> command) => _command = command;
+            public Func<ParseResult, ITemplateEngineHost> HostBuilder => hostBuilder;
 
             public override async Task<int> InvokeAsync(ParseResult parseResult, CancellationToken cancellationToken)
             {
-                TArgs args = _command.ParseContext(parseResult);
-                using IEngineEnvironmentSettings environmentSettings = _command.CreateEnvironmentSettings(args, parseResult);
+                TArgs args = command.ParseContext(parseResult);
+
+                using IEngineEnvironmentSettings environmentSettings = CreateEnvironmentSettings(args, hostBuilder(parseResult));
                 using TemplatePackageManager templatePackageManager = new(environmentSettings);
 
                 NewCommandStatus returnCode;
@@ -241,7 +235,7 @@ namespace Microsoft.TemplateEngine.Cli.Commands
                     using (Timing.Over(environmentSettings.Host.Logger, "Execute"))
                     {
                         await HandleGlobalOptionsAsync(args, environmentSettings, templatePackageManager, cancellationToken).ConfigureAwait(false);
-                        returnCode = await _command.ExecuteAsync(args, environmentSettings, templatePackageManager, parseResult, cancellationToken).ConfigureAwait(false);
+                        returnCode = await command.ExecuteAsync(args, environmentSettings, templatePackageManager, parseResult, cancellationToken).ConfigureAwait(false);
                     }
                 }
                 catch (Exception ex)

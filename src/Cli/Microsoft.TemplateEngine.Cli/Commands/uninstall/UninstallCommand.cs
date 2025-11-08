@@ -9,10 +9,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 {
     internal class UninstallCommand : BaseUninstallCommand
     {
-        public UninstallCommand(
-            NewCommand parentCommand,
-            Func<ParseResult, ITemplateEngineHost> hostBuilder)
-            : base(hostBuilder, "uninstall")
+        public UninstallCommand(NewCommand parentCommand)
+            : base("uninstall")
         {
             parentCommand.AddNoLegacyUsageValidators(this);
         }

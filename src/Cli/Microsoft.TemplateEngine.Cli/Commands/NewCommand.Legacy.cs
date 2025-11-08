@@ -3,7 +3,6 @@
 
 using System.CommandLine;
 using System.CommandLine.Parsing;
-using Microsoft.TemplateEngine.Abstractions;
 
 namespace Microsoft.TemplateEngine.Cli.Commands
 {
@@ -133,7 +132,7 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             }
         }
 
-        private void BuildLegacySymbols(Func<ParseResult, ITemplateEngineHost> hostBuilder)
+        private void BuildLegacySymbols()
         {
             Arguments.Add(ShortNameArgument);
             Arguments.Add(RemainingArguments);
@@ -154,14 +153,14 @@ namespace Microsoft.TemplateEngine.Cli.Commands
 
             TreatUnmatchedTokensAsErrors = true;
 
-            Add(new LegacyInstallCommand(this, hostBuilder));
-            Add(new LegacyUninstallCommand(this, hostBuilder));
-            Add(new LegacyUpdateCheckCommand(this, hostBuilder));
-            Add(new LegacyUpdateApplyCommand(this, hostBuilder));
-            Add(new LegacySearchCommand(this, hostBuilder));
-            Add(new LegacyListCommand(this, hostBuilder));
-            Add(new LegacyAliasAddCommand(hostBuilder));
-            Add(new LegacyAliasShowCommand(hostBuilder));
+            Add(new LegacyInstallCommand(this));
+            Add(new LegacyUninstallCommand(this));
+            Add(new LegacyUpdateCheckCommand(this));
+            Add(new LegacyUpdateApplyCommand(this));
+            Add(new LegacySearchCommand(this));
+            Add(new LegacyListCommand(this));
+            Add(new LegacyAliasAddCommand());
+            Add(new LegacyAliasShowCommand());
         }
     }
 }
