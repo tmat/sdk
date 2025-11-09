@@ -18,19 +18,19 @@ namespace Microsoft.DotNet.Cli.Commands.New;
 
 internal static class NewCommandDefinition
 {
+    public const string Name = "new";
     public static readonly string DocsLink = "https://aka.ms/dotnet-new";
-    public const string CommandName = "new";
 
-    private const VerbosityOptions DefaultVerbosity = VerbosityOptions.normal;
+    public const VerbosityOptions DefaultVerbosity = VerbosityOptions.normal;
 
-    private static readonly Option<bool> s_disableSdkTemplatesOption = new Option<bool>("--debug:disable-sdk-templates")
+    public static readonly Option<bool> DisableSdkTemplatesOption = new Option<bool>("--debug:disable-sdk-templates")
     {
         DefaultValueFactory = static _ => false,
         Description = CliCommandStrings.DisableSdkTemplates_OptionDescription,
         Recursive = true
     }.Hide();
 
-    private static readonly Option<bool> s_disableProjectContextEvaluationOption = new Option<bool>(
+    public static readonly Option<bool> DisableProjectContextEvaluationOption = new Option<bool>(
         "--debug:disable-project-context")
     {
         DefaultValueFactory = static _ => false,
@@ -38,7 +38,7 @@ internal static class NewCommandDefinition
         Recursive = true
     }.Hide();
 
-    private static readonly Option<VerbosityOptions> s_verbosityOption = new("--verbosity", "-v")
+    public static readonly Option<VerbosityOptions> VerbosityOption = new("--verbosity", "-v")
     {
         DefaultValueFactory = _ => DefaultVerbosity,
         Description = CliCommandStrings.Verbosity_OptionDescription,
@@ -46,20 +46,23 @@ internal static class NewCommandDefinition
         Recursive = true
     };
 
-    private static readonly Option<bool> s_diagnosticOption =
+    public static readonly Option<bool> DiagnosticOption =
         CommonOptionsFactory
             .CreateDiagnosticsOption(recursive: true)
             .WithDescription(CliCommandStrings.Diagnostics_OptionDescription);
 
-    private static Command AddOptions(Command command)
-    {
-        command.Options.Add(s_disableSdkTemplatesOption);
-        command.Options.Add(s_disableProjectContextEvaluationOption);
-        command.Options.Add(s_verbosityOption);
-        command.Options.Add(s_diagnosticOption);
-        return command;
-    }
+    public static readonly IEnumerable<Option> Options =
+    [
+        DisableSdkTemplatesOption,
+        DisableProjectContextEvaluationOption,
+        VerbosityOption,
+        DiagnosticOption,
+    ];
 
     public static Command Create()
-        => AddOptions(NewCommandFactory.CreateDefinition(CommandName));
+    {
+        var command = NewCommandFactory.CreateDefinition(Name);
+        command.Options.AddRange(Options);
+        return command;
+    }
 }

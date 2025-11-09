@@ -32,19 +32,21 @@ internal static class NewCommandParser
 
     public static Command GetCommand()
     {
-        return AddOptions(NewCommandFactory.Create(CommandName, GetEngineHost));
+        var command = NewCommandFactory.Create(NewCommandDefinition.Name, GetEngineHost);
+        command.Options.AddRange(NewCommandDefinition.Options);
+        return command;
 
         static CliTemplateEngineHost GetEngineHost(ParseResult parseResult)
         {
-            bool disableSdkTemplates = parseResult.GetValue(s_disableSdkTemplatesOption);
-            bool disableProjectContext = parseResult.GetValue(s_disableProjectContextEvaluationOption)
+            bool disableSdkTemplates = parseResult.GetValue(NewCommandDefinition.DisableSdkTemplatesOption);
+            bool disableProjectContext = parseResult.GetValue(NewCommandDefinition.DisableProjectContextEvaluationOption)
                 || Env.GetEnvironmentVariableAsBool(EnableProjectContextEvaluationEnvVarName);
-            bool diagnosticMode = parseResult.GetValue(s_diagnosticOption);
+            bool diagnosticMode = parseResult.GetValue(NewCommandDefinition.DiagnosticOption);
             FileInfo? projectPath = parseResult.GetValue(SharedOptions.ProjectPathOption);
             FileInfo? outputPath = parseResult.GetValue(SharedOptions.OutputOption);
 
-            OptionResult? verbosityOptionResult = parseResult.GetResult(s_verbosityOption);
-            VerbosityOptions verbosity = DefaultVerbosity;
+            OptionResult? verbosityOptionResult = parseResult.GetResult(NewCommandDefinition.VerbosityOption);
+            VerbosityOptions verbosity = NewCommandDefinition.DefaultVerbosity;
 
             if (diagnosticMode || CommandLoggingContext.IsVerbose)
             {
