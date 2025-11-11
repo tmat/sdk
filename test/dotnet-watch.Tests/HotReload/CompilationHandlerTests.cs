@@ -14,6 +14,7 @@ public class CompilationHandlerTests(ITestOutputHelper output) : DotNetWatchTest
         var workingDirectory = testAsset.Path;
         var hostDir = Path.Combine(testAsset.Path, "Host");
         var hostProject = Path.Combine(hostDir, "Host.csproj");
+        var hostProjectRepr = new ProjectRepresentation(hostProject, entryPointFilePath: null);
 
         var options = TestOptions.GetProjectOptions(["--project", hostProject]);
 
@@ -24,14 +25,14 @@ public class CompilationHandlerTests(ITestOutputHelper output) : DotNetWatchTest
         var reporter = new TestReporter(Logger);
         var loggerFactory = new LoggerFactory(reporter);
         var logger = loggerFactory.CreateLogger("Test");
-        var factory = new ProjectGraphFactory(globalOptions: []);
+        var factory = new ProjectGraphFactory(hostProjectRepr, globalOptions: []);
 
-        var projectGraph = factory.TryLoadProjectGraph(options.ProjectPath, logger, projectGraphRequired: false, CancellationToken.None);
+        var projectGraph = factory.TryLoadProjectGraph(logger, projectGraphRequired: false, CancellationToken.None);
         Assert.NotNull(projectGraph);
 
         var handler = new CompilationHandler(logger, processRunner);
 
-        await handler.UpdateProjectConeAsync(projectGraph, hostProject, CancellationToken.None);
+        await handler.UpdateProjectConeAsync(projectGraph, hostProjectRepr, CancellationToken.None);
 
         // all projects are present
         AssertEx.SequenceEqual(["Host", "Lib2", "Lib", "A", "B"], handler.Workspace.CurrentSolution.Projects.Select(p => p.Name));
