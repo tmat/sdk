@@ -154,7 +154,7 @@ namespace Microsoft.DotNet.Watch
                 return false;
             }
 
-            return VirtualProjectBuildingCommand.IsValidEntryPointPath(entryPointPath);
+            return VirtualProjectBuilder.IsValidEntryPointPath(entryPointPath);
         }
 
         /// <summary>
