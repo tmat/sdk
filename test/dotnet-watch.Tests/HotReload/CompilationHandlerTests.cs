@@ -31,7 +31,7 @@ public class CompilationHandlerTests(ITestOutputHelper output) : DotNetWatchTest
 
         var handler = new CompilationHandler(logger, processRunner);
 
-        await handler.UpdateProjectConeAsync(projectGraph, hostProject, workingDirectory, CancellationToken.None);
+        await handler.UpdateProjectConeAsync(projectGraph, hostProject, CancellationToken.None);
 
         // all projects are present
         AssertEx.SequenceEqual(["Host", "Lib2", "Lib", "A", "B"], handler.Workspace.CurrentSolution.Projects.Select(p => p.Name));

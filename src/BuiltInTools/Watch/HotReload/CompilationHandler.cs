@@ -51,7 +51,7 @@ namespace Microsoft.DotNet.Watch
         {
             _logger = logger;
             _processRunner = processRunner;
-            Workspace = new HotReloadMSBuildWorkspace(logger, projectFile => _projectInstances.GetValueOrDefault(projectFile, []));
+            Workspace = new HotReloadMSBuildWorkspace(logger, projectFile => (instances: _projectInstances.GetValueOrDefault(projectFile, []), project: null));
             _hotReloadService = new HotReloadService(Workspace.CurrentSolution.Services, () => ValueTask.FromResult(GetAggregateCapabilities()));
         }
 
@@ -707,7 +707,7 @@ namespace Microsoft.DotNet.Watch
                     keySelector: static group => group.Key,
                     elementSelector: static group => group.Select(static node => node.ProjectInstance).ToImmutableArray());
 
-        public async Task UpdateProjectConeAsync(ProjectGraph projectGraph, string projectPath, string baseDirectory, CancellationToken cancellationToken)
+        public async Task UpdateProjectConeAsync(ProjectGraph projectGraph, string projectPath, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Loading projects ...");
             var stopwatch = Stopwatch.StartNew();

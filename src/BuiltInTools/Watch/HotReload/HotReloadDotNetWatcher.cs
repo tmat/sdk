@@ -167,7 +167,7 @@ namespace Microsoft.DotNet.Watch
                         return;
                     }
 
-                    await compilationHandler.UpdateProjectConeAsync(evaluationResult.ProjectGraph, rootProjectOptions.ProjectPath, rootProjectOptions.WorkingDirectory, iterationCancellationToken);
+                    await compilationHandler.UpdateProjectConeAsync(evaluationResult.ProjectGraph, rootProjectOptions.ProjectPath, iterationCancellationToken);
 
                     // Solution must be initialized after we load the solution but before we start watching for file changes to avoid race condition
                     // when the EnC session captures content of the file after the changes has already been made.
@@ -455,7 +455,7 @@ namespace Microsoft.DotNet.Watch
                                 // additional files/directories may have been added:
                                 evaluationResult.WatchFiles(fileWatcher);
 
-                                await compilationHandler.UpdateProjectConeAsync(evaluationResult.ProjectGraph, rootProjectOptions.ProjectPath, rootProjectOptions.WorkingDirectory, iterationCancellationToken);
+                                await compilationHandler.UpdateProjectConeAsync(evaluationResult.ProjectGraph, rootProjectOptions.ProjectPath, iterationCancellationToken);
 
                                 if (shutdownCancellationToken.IsCancellationRequested)
                                 {
