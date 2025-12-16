@@ -885,7 +885,7 @@ namespace Microsoft.DotNet.Watch
                     : null,
 
                 // pass user-specified build arguments last to override defaults:
-                Arguments = ["build", project.ProjectOrEntryPointFilePath, "-consoleLoggerParameters:NoSummary;Verbosity=minimal", .. buildArguments]
+                Arguments = ["build", project.ProjectOrEntryPointFilePath, .. buildArguments]
             };
 
             _context.BuildLogger.Log(MessageDescriptor.Building, project.ProjectOrEntryPointFilePath);

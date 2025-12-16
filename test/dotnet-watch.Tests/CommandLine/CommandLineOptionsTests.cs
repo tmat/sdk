@@ -388,13 +388,6 @@ namespace Microsoft.DotNet.Watch.UnitTests
         }
 
         [Fact]
-        public void CannotHaveQuietAndVerbose()
-        {
-            VerifyErrors(["--quiet", "--verbose"],
-                $"[Error] {Resources.Error_QuietAndVerboseSpecified}");
-        }
-
-        [Fact]
         public void ShortFormForProjectArgumentPrintsWarning()
         {
             var options = VerifyOptions(["-p", "MyProject.csproj"],

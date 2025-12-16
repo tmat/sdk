@@ -10,6 +10,7 @@ using Microsoft.Build.Locator;
 using Microsoft.DotNet.Cli;
 using Microsoft.DotNet.Cli.Commands.Run;
 using Microsoft.DotNet.Cli.Utils;
+using Microsoft.DotNet.ProjectTools;
 using Microsoft.Extensions.Logging;
 
 namespace Microsoft.DotNet.Watch

@@ -47,7 +47,7 @@ internal sealed class ProjectGraphFactory
 
         if (rootProject.EntryPointFilePath != null)
         {
-            _virtualRootProjectBuilder = new VirtualProjectBuilder(rootProject.EntryPointFilePath, "net10.0"); // TODO
+            _virtualRootProjectBuilder = new VirtualProjectBuilder(rootProject.EntryPointFilePath, "10.0"); // TODO
         }
     }
 
