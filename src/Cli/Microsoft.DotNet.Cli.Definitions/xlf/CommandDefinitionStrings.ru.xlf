@@ -2370,11 +2370,6 @@ Tool '{1}' (version '{2}') was successfully installed. Entry is added to the man
         <target state="new">Specify which project file to use because this '{0}' contains more than one project file.</target>
         <note />
       </trans-unit>
-      <trans-unit id="MultipleProjectsEvaluationResult_Error">
-        <source>Multiple projects found: {0}.</source>
-        <target state="new">Multiple projects found: {0}.</target>
-        <note>{0} - semi-colon separated list of path to projects found.</note>
-      </trans-unit>
       <trans-unit id="MultipleSamePackageId">
         <source>More than one entry exists for package(s): {0}.</source>
         <target state="new">More than one entry exists for package(s): {0}.</target>
@@ -2384,15 +2379,6 @@ Tool '{1}' (version '{2}') was successfully installed. Entry is added to the man
         <source>Name</source>
         <target state="new">Name</target>
         <note />
-      </trans-unit>
-      <trans-unit id="NeedNuGetInConfig">
-        <source>The 'dotnet tool search' command unconditionally accesses nuget.org to find tools, but it is not present in your nuget.config. Add it to run this command.
-    This can be done with this command:
-  dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org</source>
-        <target state="new">The 'dotnet tool search' command unconditionally accesses nuget.org to find tools, but it is not present in your nuget.config. Add it to run this command.
-    This can be done with this command:
-  dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org</target>
-        <note>Do not translate 'dotnet tool search' or 'nuget.config'. Do not localize the last line at all.</note>
       </trans-unit>
       <trans-unit id="NeedRunToolRestore">
         <source>Run "dotnet tool restore" to make the "{0}" command available.</source>
@@ -4093,16 +4079,6 @@ The default is 'false.' However, when targeting .NET 7 or lower, the default is 
         <target state="new">succeeded:</target>
         <note />
       </trans-unit>
-      <trans-unit id="Summary">
-        <source>Summary</source>
-        <target state="new">Summary</target>
-        <note>Table lable</note>
-      </trans-unit>
-      <trans-unit id="Tags">
-        <source>Tags</source>
-        <target state="new">Tags</target>
-        <note>Table lable</note>
-      </trans-unit>
       <trans-unit id="TempDirOptionDescription">
         <source>Specify a temporary directory for this command to download and extract NuGet packages (must be secure).</source>
         <target state="new">Specify a temporary directory for this command to download and extract NuGet packages (must be secure).</target>
@@ -4594,16 +4570,6 @@ and the corresponding package Ids for installed tools using the command
         <target state="new">Update a global or local tool.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ToolUpdatePackageIdArgumentDescription">
-        <source>The NuGet Package Id of the tool to update.</source>
-        <target state="new">The NuGet Package Id of the tool to update.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ToolUpdatePackageIdArgumentName">
-        <source>PACKAGE_ID</source>
-        <target state="new">PACKAGE_ID</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ToolUpdateToolHasMultipleVersionsInstalled">
         <source>Tool '{0}' has multiple versions installed and cannot be updated.</source>
         <target state="new">Tool '{0}' has multiple versions installed and cannot be updated.</target>
@@ -4632,16 +4598,6 @@ and the corresponding package Ids for installed tools using the command
       <trans-unit id="UnableToCheckCertificateChainPolicy">
         <source>The requested certificate chain policy could not be checked: {0}</source>
         <target state="new">The requested certificate chain policy could not be checked: {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="UnableToDeleteTemporaryDepsJson">
-        <source>unable to delete temporary deps.json file: {0}</source>
-        <target state="new">unable to delete temporary deps.json file: {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="UnableToGenerateDepsJson">
-        <source>Unable to generate deps.json, it may have been already generated.  You can specify the "-d" option option after "dotnet" for diagnostic output (for example, "dotnet -d &lt;toolname&gt;": {0}</source>
-        <target state="new">Unable to generate deps.json, it may have been already generated.  You can specify the "-d" option option after "dotnet" for diagnostic output (for example, "dotnet -d &lt;toolname&gt;": {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToLocateDotnetMultiplexer">

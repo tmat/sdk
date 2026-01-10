@@ -782,12 +782,6 @@ The default is 'false.' However, when targeting .NET 7 or lower, the default is 
   <data name="UnableToCheckCertificateChainPolicy" xml:space="preserve">
     <value>The requested certificate chain policy could not be checked: {0}</value>
   </data>
-  <data name="UnableToDeleteTemporaryDepsJson" xml:space="preserve">
-    <value>unable to delete temporary deps.json file: {0}</value>
-  </data>
-  <data name="UnableToGenerateDepsJson" xml:space="preserve">
-    <value>Unable to generate deps.json, it may have been already generated.  You can specify the "-d" option option after "dotnet" for diagnostic output (for example, "dotnet -d &lt;toolname&gt;": {0}</value>
-  </data>
   <data name="UnableToLocateDotnetMultiplexer" xml:space="preserve">
     <value>Unable to locate dotnet multiplexer</value>
   </data>
@@ -1808,18 +1802,8 @@ Tool '{1}' (version '{2}') was successfully installed. Entry is added to the man
   <data name="MsiProgressUninstall" xml:space="preserve">
     <value>Removing {0} </value>
   </data>
-  <data name="MultipleProjectsEvaluationResult_Error" xml:space="preserve">
-    <value>Multiple projects found: {0}.</value>
-    <comment>{0} - semi-colon separated list of path to projects found.</comment>
-  </data>
   <data name="NameColumnHeader" xml:space="preserve">
     <value>Name</value>
-  </data>
-  <data name="NeedNuGetInConfig" xml:space="preserve">
-    <value>The 'dotnet tool search' command unconditionally accesses nuget.org to find tools, but it is not present in your nuget.config. Add it to run this command.
-    This can be done with this command:
-  dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org</value>
-    <comment>Do not translate 'dotnet tool search' or 'nuget.config'. Do not localize the last line at all.</comment>
   </data>
   <data name="NetAddCommand" xml:space="preserve">
     <value>.NET Add Command</value>
@@ -2640,14 +2624,6 @@ Your project targets multiple frameworks. Specify which framework to run using '
   <data name="StoreRuntimeOptionDescription" xml:space="preserve">
     <value>The target runtime to store packages for.</value>
   </data>
-  <data name="Summary" xml:space="preserve">
-    <value>Summary</value>
-    <comment>Table lable</comment>
-  </data>
-  <data name="Tags" xml:space="preserve">
-    <value>Tags</value>
-    <comment>Table lable</comment>
-  </data>
   <data name="TempDirOptionDescription" xml:space="preserve">
     <value>Specify a temporary directory for this command to download and extract NuGet packages (must be secure).</value>
   </data>
@@ -2887,12 +2863,6 @@ and the corresponding package Ids for installed tools using the command
   </data>
   <data name="ToolUpdateCommandDescription" xml:space="preserve">
     <value>Update a global or local tool.</value>
-  </data>
-  <data name="ToolUpdatePackageIdArgumentDescription" xml:space="preserve">
-    <value>The NuGet Package Id of the tool to update.</value>
-  </data>
-  <data name="ToolUpdatePackageIdArgumentName" xml:space="preserve">
-    <value>PACKAGE_ID</value>
   </data>
   <data name="ToolUpdateToolHasMultipleVersionsInstalled" xml:space="preserve">
     <value>Tool '{0}' has multiple versions installed and cannot be updated.</value>
