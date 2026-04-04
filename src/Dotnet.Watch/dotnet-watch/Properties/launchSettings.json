@@ -2,8 +2,8 @@
   "profiles": {
     "dotnet-watch": {
       "commandName": "Project",
-      "commandLineArgs": "App.cs --non-interactive",
-      "workingDirectory": "D:\\Temp\\fba",
+      "commandLineArgs": "-bl",
+      "workingDirectory": "D:\\Temp\\app2",
       "environmentVariables": {
         "DOTNET_WATCH_DEBUG_SDK_DIRECTORY": "$(RepoRoot)artifacts\\bin\\redist\\$(Configuration)\\dotnet\\sdk\\$(Version)",
         "DCP_IDE_REQUEST_TIMEOUT_SECONDS": "100000",
