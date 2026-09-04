@@ -79,18 +79,14 @@ internal sealed class CommandLineOptions
 
         // Options that the subcommand forwards to build command.
         // Exclude --framework option as it is passed to `dotnet build` and `dotnet run` explicitly by the watcher.
-        // Reuse watch's --verbosity option instance so we don't add a duplicate option to the command.
+        // Exclude --verbosity option as it is passed explicitly below.
         var buildOptions = command.Options
-            .Where(o => o.ForwardingFunction is not null && o.Name != CommonOptions.FrameworkOptionName)
-            .Select(o => o.Name == definition.VerbosityOption.Name ? definition.VerbosityOption : o)
+            .Where(o => o.ForwardingFunction is not null && o.Name is not (CommonOptions.FrameworkOptionName or CommonOptions.VerbosityOptionName))
             .ToList();
 
         foreach (var buildOption in buildOptions)
         {
-            if (buildOption != definition.VerbosityOption)
-            {
-                definition.Options.Add(buildOption);
-            }
+            definition.Options.Add(buildOption);
         }
 
         // reparse with forwarded options:
@@ -138,7 +134,8 @@ internal sealed class CommandLineOptions
         var msbuildCommandDefinition = new MSBuildCommandDefinition();
 
         var buildArguments = buildOptions
-            .SelectMany(option => GetForwardedBuildArguments(option, parseResult, definition))
+            .Select(option => option.ForwardingFunction!(parseResult))
+            .SelectMany(args => args)
             .Where(arg => !msbuildCommandDefinition.Parse(arg).HasOption(msbuildCommandDefinition.TargetOption))
             .ToList();
 
@@ -147,13 +144,26 @@ internal sealed class CommandLineOptions
             buildArguments.Add(binLogToken);
         }
 
-        var logLevel = parseResult.GetValue(definition.VerboseOption)
-            ? LogLevel.Debug
-            : parseResult.GetValue(definition.QuietOption)
-            ? LogLevel.Warning
-            : parseResult.GetValue(definition.VerbosityOption) is VerbosityOptions verbosity
-            ? ToLogLevel(verbosity)
-            : LogLevel.Information;
+        LogLevel logLevel;
+        if (parseResult.GetValue(definition.QuietOption))
+        {
+            buildArguments.Add($"{CommonOptions.VerbosityOptionName}:quiet");
+            logLevel = ToLogLevel(VerbosityOptions.quiet);
+        }
+        else if (parseResult.GetValue(definition.VerboseOption))
+        {
+            buildArguments.Add($"{CommonOptions.VerbosityOptionName}:detailed");
+            logLevel = ToLogLevel(VerbosityOptions.detailed);
+        }
+        else if (parseResult.GetValue(definition.VerbosityOption) is VerbosityOptions verbosityValue)
+        {
+            buildArguments.Add($"{CommonOptions.VerbosityOptionName}:{verbosityValue}");
+            logLevel = ToLogLevel(verbosityValue);
+        }
+        else
+        {
+            logLevel = LogLevel.Information;
+        }
 
         var launchProfile = parseResult.GetValue(definition.NoLaunchProfileOption)
             ? Optional<string?>.NoValue
@@ -186,40 +196,15 @@ internal sealed class CommandLineOptions
 
     /// <summary>
     /// Maps MSBuild-style <see cref="VerbosityOptions"/> to watch log levels.
-    /// Aligns with existing <c>--quiet</c> (Warning), <c>--verbose</c> (Debug),
-    /// and <c>--verbosity:diagnostic</c> (Trace) behavior.
     /// </summary>
     internal static LogLevel ToLogLevel(VerbosityOptions verbosity)
         => verbosity switch
         {
             VerbosityOptions.q or VerbosityOptions.quiet => LogLevel.Warning,
-            VerbosityOptions.m or VerbosityOptions.minimal => LogLevel.Information,
-            VerbosityOptions.n or VerbosityOptions.normal => LogLevel.Information,
             VerbosityOptions.d or VerbosityOptions.detailed => LogLevel.Debug,
             VerbosityOptions.diag or VerbosityOptions.diagnostic => LogLevel.Trace,
             _ => LogLevel.Information,
         };
-
-    private static IEnumerable<string> GetForwardedBuildArguments(
-        Option option,
-        ParseResult parseResult,
-        DotnetWatchCommandDefinition definition)
-    {
-        if (option == definition.VerbosityOption)
-        {
-            if (parseResult.GetValue(definition.QuietOption))
-            {
-                return ["--verbosity:quiet"];
-            }
-
-            if (parseResult.GetValue(definition.VerboseOption))
-            {
-                return ["--verbosity:detailed"];
-            }
-        }
-
-        return option.ForwardingFunction!(parseResult);
-    }
 
     /// <summary>
     /// Parses the value of msbuild option `-binaryLogger`.

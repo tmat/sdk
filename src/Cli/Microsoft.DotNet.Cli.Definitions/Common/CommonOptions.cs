@@ -138,8 +138,10 @@ internal static class CommonOptions
         return allValues.Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
     }
 
+    public const string VerbosityOptionName = "--verbosity";
+
     public static Option<VerbosityOptions> CreateVerbosityOption(VerbosityOptions defaultVerbosity) =>
-        new Option<VerbosityOptions>("--verbosity", "-v")
+        new Option<VerbosityOptions>(VerbosityOptionName, "-v")
         {
             Description = CommandDefinitionStrings.VerbosityOptionDescription,
             HelpName = CommandDefinitionStrings.LevelArgumentName,
@@ -149,7 +151,7 @@ internal static class CommonOptions
         .AggregateRepeatedTokens();
 
     public static Option<VerbosityOptions?> CreateVerbosityOption() =>
-        new Option<VerbosityOptions?>("--verbosity", "-v", "--v", "-verbosity", "/v", "/verbosity")
+        new Option<VerbosityOptions?>(VerbosityOptionName, "-v", "--v", "-verbosity", "/v", "/verbosity")
         {
             Description = CommandDefinitionStrings.VerbosityOptionDescription,
             HelpName = CommandDefinitionStrings.LevelArgumentName
@@ -158,7 +160,7 @@ internal static class CommonOptions
         .AggregateRepeatedTokens();
 
     public static Option<VerbosityOptions> CreateHiddenVerbosityOption() =>
-        new Option<VerbosityOptions>("--verbosity", "-v", "--v", "-verbosity", "/v", "/verbosity")
+        new Option<VerbosityOptions>(VerbosityOptionName, "-v", "--v", "-verbosity", "/v", "/verbosity")
         {
             Description = CommandDefinitionStrings.VerbosityOptionDescription,
             HelpName = CommandDefinitionStrings.LevelArgumentName,
