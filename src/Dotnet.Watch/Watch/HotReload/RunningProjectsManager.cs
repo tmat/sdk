@@ -61,7 +61,7 @@ internal sealed class RunningProjectsManager(ProcessRunner processRunner, ILogge
         var processTerminationSource = new CancellationTokenSource();
 
         // Cancel process communication as soon as process termination is requested, shutdown is requested, or the process exits (whichever comes first).
-        // If we only cancel after we process exit event handler is triggered the pipe might have already been closed and may fail unexpectedly.
+        // If we only cancel after process exit event handler is triggered the pipe might have already been closed and may fail unexpectedly.
         using var processCommunicationCancellationSource = CancellationTokenSource.CreateLinkedTokenSource(processTerminationSource.Token, processExitedSource.Token, cancellationToken);
         var processCommunicationCancellationToken = processCommunicationCancellationSource.Token;
 
@@ -110,7 +110,7 @@ internal sealed class RunningProjectsManager(ProcessRunner processRunner, ILogge
         if (launchResult.ProcessId == null)
         {
             // process failed to start:
-            Debug.Assert(processTask.IsCompleted && processTask.Result == int.MinValue);
+            Debug.Assert(processTask.IsCompleted && processTask.Result is null);
 
             // error already reported
             return null;
